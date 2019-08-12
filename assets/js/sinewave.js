@@ -800,7 +800,9 @@
     });
 
     window.addEventListener('resize', function () {
-        siteMenu.className = 'site-menu';
+        if(!siteMenu.classList.contains('site-menu')) {
+            siteMenu.className = 'site-menu';
+        }
     }, false);
 
 })();
