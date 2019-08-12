@@ -1,0 +1,54 @@
+.sw-builder-layout {
+    display: flex;
+    align-items: stretch;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.sw-builder-tray {
+    width: 300px;
+    margin-right: 2rem;
+}
+
+.sw-tray-section {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 2px solid transparent;
+    border-radius: 5px;
+}
+
+    .sw-tray-section.containment {
+        border-color: #1888eb;
+    }
+
+    .sw-tray-section.nodes {
+        border-color: #14af14;
+    }
+
+    .sw-tray-section.modifiers {
+        border-color: #ffba00;
+    }
+
+    .sw-tray-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .sw-tray-heading {
+        margin-top: 0;
+        font-size: 1rem;
+    }
+
+.sw-builder-canvas {
+    flex-grow: 1;
+    padding: 1rem;
+    border: 2px solid #d0d0d0;
+    border-radius: 5px;
+}
+
+.is-sinewave-blue {
+    color: #1888eb;
+}
+
+.is-sinewave-green {
+    color: #14af14;
+}
