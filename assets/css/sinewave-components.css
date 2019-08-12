@@ -1,0 +1,530 @@
+/*transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); EASE OUT BACK */
+/*transition: all 1s cubic-bezier(0.6, -0.28, 0.735, 0.045); EASE IN BACK */
+/*transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55); EASE IN OUT BACK */
+
+/* TOAST */
+.toaster {
+    position: fixed;
+    max-width: 500px;
+    margin: 1rem;
+    z-index: 110001;
+}
+
+.toast {
+    margin: 5px;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 .5rem 1rem 0 rgba(0, 0, 0, .2);
+    color: white;
+    cursor: pointer;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 50%, 0);
+    transition: all .3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    animation: toast .5s 0s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes toast {
+    to {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@-moz-keyframes toast {
+}
+
+@-webkit-keyframes toast {
+}
+
+.toast.info,
+.toast.default {
+    background-color: #1888eb;
+}
+
+    .toast.info:hover,
+    .toast.default:hover {
+        background-color: #0266be;
+    }
+
+.toast > h4 {
+    margin: 0;
+    padding-bottom: .5rem;
+}
+
+.toast.success {
+    background-color: #14af14;
+    color: white;
+}
+
+    .toast.success:hover {
+        background-color: #099a09;
+    }
+
+.toast.warning {
+    background-color: red;
+}
+
+    .toast.warning:hover {
+        background-color: #cb2026;
+    }
+
+.toast.caution {
+    background-color: #ffd400;
+    color: black;
+}
+
+    .toast.caution:hover {
+        background-color: #ffba00;
+    }
+
+.toaster.bottom-left {
+    left: 0;
+    bottom: 0;
+}
+
+.toaster.bottom-right {
+    right: 0;
+    bottom: 0;
+}
+
+.toaster.bottom-center {
+    left: 50%;
+    bottom: 0;
+    margin-left: -12.5%;
+}
+
+.toaster.top-left {
+    top: 0;
+    left: 0;
+}
+
+.toaster.top-center {
+    top: 0;
+    left: 50%;
+    margin-left: -12.5%;
+}
+
+.toaster.top-right {
+    top: 0;
+    right: 0;
+}
+
+.toaster.left-center {
+    top: 50%;
+    left: 0;
+}
+
+.toaster.center-center {
+    top: 50%;
+    left: 50%;
+    margin-top: -12.5%;
+    margin-left: -12.5%;
+}
+
+.toaster.right-center {
+    top: 50%;
+    right: 0;
+}
+
+.toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: #0266be;
+    border-radius: 5px;
+}
+
+.toast.warning .toast-progress {
+    background-color: #cb2026;
+}
+
+.toast.success .toast-progress {
+    background-color: #099a09;
+}
+
+.toast.caution .toast-progress {
+    background-color: #ffba00;
+}
+
+.toast.dismiss {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@keyframes _toastProgress {
+    to {
+        width: 0;
+    }
+}
+
+/* DIALOG */
+.sw-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    transition: visibility .5s;
+    z-index: 10001;
+}
+
+.sw-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .3);
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility .5s, opacity .5s;
+}
+
+.sw-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    margin: 2rem;
+    background-color: white;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    box-shadow: 0 0 5rem 0 rgba(0, 0, 0, .3);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(.85);
+    overflow: hidden;
+}
+
+.sw-modal-container.is-minimized {
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.sw-modal-container.is-maximized {
+    align-items: center;
+    justify-content: center;
+}
+
+.sw-modal-container.is-minimized .sw-modal-overlay {
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+.sw-modal-container.is-minimized .sw-modal {
+    width: 300px !important;
+    border-color: #1888eb;
+    box-shadow: none;
+}
+
+.sw-modal-container.is-maximized .sw-modal {
+    width: 100% !important;
+    height: calc(100% - 4rem) !important;
+}
+
+.sw-modal-container.is-minimized .sw-modal-content-wrapper {
+    visibility: hidden;
+    height: 0;
+    padding: 0 1rem;
+}
+
+.sw-modal-container.is-minimized .sw-modal-controls {
+    background-color: white;
+}
+
+.sw-modal-container.is-minimized .sw-modal-button-controls {
+    display: none;
+}
+
+.sw-modal-container.is-open {
+    visibility: visible;
+}
+
+    .sw-modal-container.is-open .sw-modal-overlay,
+    .sw-modal-container.is-open .sw-modal {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .sw-modal-container.is-open .sw-modal {
+        transition: visibility .3s, opacity .3s, transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition-delay: .15s;
+        transform: scale(1);
+    }
+
+.sw-modal-container:not(.is-open) .sw-modal {
+    transition: visibility .3s, opacity .3s, transform .3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    transition-delay: .15s;
+}
+
+.sw-modal-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 1rem;
+}
+
+.sw-modal-title {
+    margin-bottom: .25rem;
+    padding-bottom: .25rem;
+    font: 700 1.2rem 'Nunito Sans';
+}
+
+.sw-modal-inner {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.sw-modal-content {
+    position: relative;
+    display: block;
+    height: 100%;
+}
+
+    .sw-modal-content::after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+
+.sw-modal-controls,
+.sw-modal-button-controls {
+    display: flex;
+    padding: 1rem;
+}
+
+.sw-modal-controls {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    justify-content: flex-end;
+    background-color: rgba(208, 208, 208, 0.2);
+}
+
+.sw-modal-control-button {
+    margin-left: .5rem;
+    font-size: 0;
+    cursor: pointer;
+}
+
+    .sw-modal-control-button > img {
+        width: 100%;
+    }
+
+.sw-modal-container.is-screen-height .sw-modal-button-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.sw-modal-button-controls,
+.sw-modal-button-controls.start {
+    justify-content: flex-start;
+}
+
+    .sw-modal-button-controls.end {
+        justify-content: flex-end;
+    }
+
+    .sw-modal-button-controls.around {
+        justify-content: space-around;
+    }
+
+    .sw-modal-button-controls.between {
+        justify-content: space-between;
+    }
+
+.sw-modal-button {
+    margin-left: .25rem;
+    margin-right: .25rem;
+}
+
+.sw-modal-button {
+    text-transform: capitalize;
+}
+
+.sw-modal-button-controls .sw-modal-control-button:first-child {
+    margin-left: 0;
+}
+
+.sw-modal-button-controls .sw-modal-control-button:last-child {
+    margin-right: 0;
+}
+
+
+/* CALENDAR */
+.sw-calendar {
+    display: none;
+    position: absolute;
+    width: 280px;
+    height: 300px;
+    background-color: white;
+    border: 2px solid #1888eb;
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+    .sw-calendar.is-visible {
+        display: block;
+    }
+
+/* wrapper around the view and controller */
+.sw-calendar-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* main container view*/
+.sw-calendar-viewport {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* overflow that contains all 3 calendar sections (days, months, years) */
+.sw-calendar-views {
+    display: flex;
+    width: 300%;
+    height: 100%;
+}
+
+    .sw-calendar-views[class*='focus-'] {
+        transition: transform .5s cubic-bezier(.165, .84, .44, 1);
+    }
+
+    .sw-calendar-views.focus-months {
+        transform: translate3d(0, 0, 0);
+    }
+
+    .sw-calendar-views.focus-days {
+        transform: translate3d(-33.333333%, 0, 0);
+    }
+
+    .sw-calendar-views.focus-years {
+        transform: translate3d(-66.67%, 0, 0);
+    }
+
+
+/* individual view (days, months, years) */
+.sw-calendar-view {
+    position: relative;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    width: 100%;
+    height: 100%;
+    padding: 2rem 1rem 0;
+}
+
+.sw-calendar-view-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #1888eb;
+    color: white;
+    font-weight: 600;
+    line-height: 2rem;
+    text-align: center;
+}
+
+    .sw-calendar-view-header.is-selected {
+        background-color: #14af14;
+    }
+
+    .sw-calendar-view-header.is-selected::after {
+        content: '';
+        width: 1rem;
+        height: 1rem;
+        display: inline-block;
+        vertical-align: -3px;
+        margin-left: 3px;
+        background: url(../img/check.svg) no-repeat 0 0;
+        background-size: cover;
+    }
+
+.sw-calendar-view-button {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 5px;
+    color: #444;
+    font-size: 14px;
+    font-weight: 600;
+    /*transition: background-color .3s cubic-bezier(.165, .84, .44, 1), color .3s cubic-bezier(.165, .84, .44, 1);*/
+    cursor: pointer;
+}
+
+    .sw-calendar-view-button:hover {
+        background-color: #ddd;
+    }
+
+    .sw-calendar-view-button.is-selected {
+        background-color: #14af14;
+        color: white;
+    }
+
+        .sw-calendar-view-button.is-selected:hover {
+            background-color: #099a09;
+        }
+
+.sw-calendar-view.sw-view-months .sw-calendar-view-button {
+    flex: 0 1 33%;
+    padding: 10px 5px;
+}
+
+.sw-calendar-view.sw-view-years .sw-calendar-view-button {
+    flex: 0 1 25%;
+}
+
+.sw-calendar-view.sw-view-days .sw-calendar-view-button {
+    flex: 0 1 20%;
+}
+
+/* control bar at the bottom of the calendar */
+.sw-calendar-view-controller {
+    display: flex;
+}
+
+/* control bar button */
+.sw-calendar-view-controller-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    padding: .5rem 1rem;
+    background-color: #1888eb;
+    color: white;
+    font-weight: 700;
+    transition: background-color .3s cubic-bezier(.165, .84, .44, 1);
+    cursor: pointer;
+}
+
+    .sw-calendar-view-controller-button:hover {
+        background-color: #0266be;
+    }
+
+    /*.sw-calendar-view-controller-button.is-selected {
+        background-color: #14af14;
+    }
+
+        .sw-calendar-view-controller-button.is-selected:hover {
+            background-color: #099a09;
+        }*/
