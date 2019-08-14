@@ -279,9 +279,9 @@
             this.o = config;
         }
 
-        this.toaster = document.querySelector('.toaster');
+        this.toaster = document.querySelector('.sw-toaster');
         if (!document.body.contains(this.toaster)) {
-            this.toaster = create('div', '', 'toaster');
+            this.toaster = create('div', '', 'sw-toaster');
             document.body.insertAdjacentElement('beforeend', this.toaster);
         }
 
@@ -291,7 +291,7 @@
     }
 
     function renderToast() {
-        this.toast = create('div', '', 'toast');
+        this.toast = create('div', '', 'sw-toast');
         var toastInsertionPoint = null;
         this.o.append === false ? toastInsertionPoint = 'afterbegin' : toastInsertionPoint = 'beforeend';
         this.toaster.insertAdjacentElement(toastInsertionPoint, this.toast);
@@ -800,9 +800,7 @@
     });
 
     window.addEventListener('resize', function () {
-        if(!siteMenu.classList.contains('site-menu')) {
-            siteMenu.className = 'site-menu';
-        }
+        siteMenu.className = 'site-menu';
     }, false);
 
 })();
