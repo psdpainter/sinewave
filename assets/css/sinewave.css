@@ -1,3 +1,4 @@
+@import 'sinewave-fonts.css';
 @import 'sinewave-components.css';
 
 *, *::before, *::after {
@@ -9,12 +10,20 @@
 body {
     margin: 0;
     font-size: 16px;
-    font-family: Nunito, sans-serif;
+    font-family: 'Nunito', sans-serif;
     line-height: 1.309;
     text-rendering: optimizeLegibility;
     text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+}
+
+body.preload input,
+body.preload select, 
+body.preload textarea {
+    transition: none !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
 }
 
 main, header, footer, picture, audio, video, section, article, aside, figure, figcaption, canvas {
@@ -119,53 +128,17 @@ h1, h2, h3, h4, h5, h6, input, select, textarea {
             }
 
 .page-heading {
-    margin-top: -2rem;
-    padding: 6rem 2rem 3rem;
-    background: linear-gradient(to bottom right, #1888eb, #ff0852);
+    margin-top: 2rem;
+    padding: 2rem;
+    background: linear-gradient(to bottom right, #0068b1, #1888eb);
     border-radius: 5px;
 }
-
-    .page-heading .back-button {
-        position: relative;
-        display: flex;
-        -webkit-justify-content: flex-start;
-        justify-content: flex-start;
-        align-items: center;
-        width: 50px;
-        height: 50px;
-    }
-
-        .page-heading .back-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -10px;
-            width: inherit;
-            height: inherit;
-            border-radius: 50%;
-            background-color: #0266BE;
-            opacity: 0;
-            transform: scale(.7);
-            transition: transform .3s cubic-bezier(0.165, 0.84, 0.44, 1), opacity .3s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
-        .page-heading .back-button:hover::before {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .page-heading .back-button > img {
-            position: relative;
-            width: 30px;
-            height: 30px;
-        }
 
     .page-heading > h1,
     .page-heading > h2,
     .page-heading > h3 {
-        padding-top: 1rem;
         padding-bottom: 1rem;
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .page-heading > * {
@@ -195,7 +168,7 @@ abbr {
 }
 
 address > * {
-    font-family: Nunito, sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 b,
@@ -223,7 +196,7 @@ kbd {
     padding: 0 5px;
     border: 2px solid #d0d0d0;
     border-radius: 5px;
-    font-family: Nunito, sans-serif;
+    font-family: 'Nunito', sans-serif;
     font-size: .875rem;
 }
 
@@ -305,6 +278,12 @@ ul, ol {
     list-style-position: outside;
 }
 
+    ul li, 
+    ol li, 
+    dl dd {
+        line-height: 1.618;
+    }
+
     ul.flush,
     ol.flush {
         padding-left: 0;
@@ -314,6 +293,12 @@ ul, ol {
         ol.flush li {
             list-style-type: none;
         }
+
+    ul.level, 
+    ol.level, 
+    dl.level {
+        padding-left: 1rem;
+    }
 
 a, img {
     outline: none;
@@ -328,20 +313,20 @@ a {
         color: #ff0852;
     }
 
-/*a.is-link {
-        text-decoration: none;
-        border-bottom: 1px solid currentColor;
+a.is-link {
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+}
+
+    a.is-link::before {
+        content: "\221E";
+        margin-right: 3px;
+        vertical-align: -10%;
+        font-size: 200%;
     }
 
-        a.is-link::before {
-            content: "\221E";
-            margin-right: 3px;
-            vertical-align: -10%;
-            font-size: 200%;
-        }*/
-
 .button {
-    font-family: Nunito, sans-serif;
+    font-family: 'Nunito', sans-serif;
     font-size: 1rem;
     background-color: transparent;
     border: 2px solid #d0d0d0;
@@ -354,7 +339,10 @@ a.anchor {
     border-radius: 500px;
     cursor: pointer;
     text-align: center;
-    transition: color .3s cubic-bezier(0.165, 0.84, 0.44, 1), background-color .3s cubic-bezier(0.165, 0.84, 0.44, 1), border-color .3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow .3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: color .3s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                background-color .3s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                border-color .3s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                box-shadow .3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 a.anchor {
@@ -434,16 +422,6 @@ a.anchor.is-caution {
         color: white;
     }
 
-/* DETAILS/SUMMARY */
-.details {
-    border: 1px solid red;
-    border-radius: 1rem;
-}
-
-    .details summary::-webkit-details-marker {
-        display: none;
-    }
-
 /* TABLES */
 .table {
     border-collapse: collapse;
@@ -451,6 +429,10 @@ a.anchor.is-caution {
 
     .table.is-stretched {
         width: 100%;
+    }
+
+    .table.is-layout-fixed {
+        table-layout: fixed;
     }
 
     .table thead th,
@@ -461,6 +443,8 @@ a.anchor.is-caution {
     .table thead th {
         text-align: left;
         padding-bottom: 1rem;
+        font-size: 1rem;
+        vertical-align: baseline;
     }
 
     .table.is-striped tbody tr:nth-child(odd),
@@ -507,26 +491,42 @@ fieldset {
             background-color: #14af14;
         }
 
-.form-row {
+.field-row {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
-    .form-row.flex .form-group {
-        padding-left: .5rem;
-        padding-right: .5rem;
-    }
-
-    .form-row.has-groups {
+    .field-row.groups {
         margin-left: -.5rem;
         margin-right: -.5rem;
     }
 
-.form-group[class*='flex-grow-'] > input {
+    .field-group {
+        padding-left: .5rem;
+        padding-right: .5rem;
+    }
+
+    .field-group.stack label, 
+    .field-group.stack .field-label {
+        display: block;
+        margin-bottom: .5rem;
+    }
+
+    .field-label.is-required {
+        position: relative;
+    }
+
+    .field-label.is-required::before {
+        content: '*';
+        margin-right: 5px;
+        color: red;
+    }
+
+.field-group[class*='flex-grow-'] > input {
     width: 100%;
 }
 
-.form-label {
+.field-label {
     font-weight: 700;
 }
 
@@ -544,16 +544,16 @@ input[type=checkbox] {
     box-shadow: none;
 }
 
-.form-checkbox,
-.form-radio {
+.field-checkbox,
+.field-radio {
     position: relative;
     margin-right: 10px;
     padding-left: 20px;
     cursor: pointer;
 }
 
-    .form-checkbox input[type=checkbox],
-    .form-radio input[type=radio] {
+    .field-checkbox input[type=checkbox],
+    .field-radio input[type=radio] {
         width: 0.1px;
         height: 0.1px;
     }
@@ -568,47 +568,47 @@ input[type=checkbox] {
     transition: border-color .3s cubic-bezier(0.165, 0.84, 0.44, 1), background-color .3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.form-checkbox .check-target {
+.field-checkbox .check-target {
     border-radius: 5px;
 }
 
-.form-checkbox input[type=checkbox]:checked ~ .check-target,
-.form-radio input[type=radio]:checked ~ .check-target {
+.field-checkbox input[type=checkbox]:checked ~ .check-target,
+.field-radio input[type=radio]:checked ~ .check-target {
     border-color: #1888eb;
 }
 
-.form-checkbox.is-success input[type=checkbox]:checked ~ .check-target,
-.form-radio.is-success input[type=radio]:checked ~ .check-target {
+.field-checkbox.is-success input[type=checkbox]:checked ~ .check-target,
+.field-radio.is-success input[type=radio]:checked ~ .check-target {
     border-color: #14af14;
 }
 
-.form-checkbox.is-caution input[type=checkbox]:checked ~ .check-target,
-.form-radio.is-caution input[type=radio]:checked ~ .check-target {
+.field-checkbox.is-caution input[type=checkbox]:checked ~ .check-target,
+.field-radio.is-caution input[type=radio]:checked ~ .check-target {
     border-color: #ffba00;
 }
 
-.form-checkbox.is-warning input[type=checkbox]:checked ~ .check-target,
-.form-radio.is-warning input[type=radio]:checked ~ .check-target {
+.field-checkbox.is-warning input[type=checkbox]:checked ~ .check-target,
+.field-radio.is-warning input[type=radio]:checked ~ .check-target {
     border-color: red;
 }
 
-.form-checkbox.is-filled input[type=checkbox]:checked ~ .check-target {
+.field-checkbox.is-filled input[type=checkbox]:checked ~ .check-target {
     background-color: #1888eb;
 }
 
-.form-checkbox.is-filled.is-success input[type=checkbox]:checked ~ .check-target {
+.field-checkbox.is-filled.is-success input[type=checkbox]:checked ~ .check-target {
     background-color: #14af14;
 }
 
-.form-checkbox.is-filled.is-caution input[type=checkbox]:checked ~ .check-target {
+.field-checkbox.is-filled.is-caution input[type=checkbox]:checked ~ .check-target {
     background-color: #ffba00;
 }
 
-.form-checkbox.is-filled.is-warning input[type=checkbox]:checked ~ .check-target {
+.field-checkbox.is-filled.is-warning input[type=checkbox]:checked ~ .check-target {
     background-color: red;
 }
 
-.form-checkbox .check-target svg.check-stroke {
+.field-checkbox .check-target svg.check-stroke {
     fill: none;
     stroke: transparent;
     stroke-width: 4;
@@ -617,32 +617,32 @@ input[type=checkbox] {
     transition: all .3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.form-checkbox input[type=checkbox]:checked ~ .check-target svg.check-stroke,
-.form-checkbox.is-info input[type=checkbox]:checked ~ .check-target svg.check-stroke {
+.field-checkbox input[type=checkbox]:checked ~ .check-target svg.check-stroke,
+.field-checkbox.is-info input[type=checkbox]:checked ~ .check-target svg.check-stroke {
     stroke: #1888eb;
 }
 
-.form-checkbox.is-success input[type=checkbox]:checked ~ .check-target svg.check-stroke {
+.field-checkbox.is-success input[type=checkbox]:checked ~ .check-target svg.check-stroke {
     stroke: #14af14;
 }
 
-.form-checkbox.is-caution input[type=checkbox]:checked ~ .check-target svg.check-stroke {
+.field-checkbox.is-caution input[type=checkbox]:checked ~ .check-target svg.check-stroke {
     stroke: #ffba00;
 }
 
-.form-checkbox.is-warning input[type=checkbox]:checked ~ .check-target svg.check-stroke {
+.field-checkbox.is-warning input[type=checkbox]:checked ~ .check-target svg.check-stroke {
     stroke: red;
 }
 
-.form-checkbox.is-filled input[type=checkbox]:checked ~ .check-target svg.check-stroke {
+.field-checkbox.is-filled input[type=checkbox]:checked ~ .check-target svg.check-stroke {
     stroke: white;
 }
 
-.form-radio .check-target {
+.field-radio .check-target {
     border-radius: 50%;
 }
 
-    .form-radio .check-target::after {
+    .field-radio .check-target::after {
         content: '';
         position: absolute;
         width: 100%;
@@ -654,62 +654,97 @@ input[type=checkbox] {
         transition: opacity .3s cubic-bezier(0.165, 0.84, 0.44, 1), transform .3s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
 
-.form-radio input[type=radio]:checked ~ .check-target::after {
+.field-radio input[type=radio]:checked ~ .check-target::after {
     opacity: 1;
     transform: scale(.7);
 }
 
-.form-radio.is-success .check-target::after,
-.form-radio.is-success input[type=radio]:checked ~ .check-target::after {
+.field-radio.is-success .check-target::after,
+.field-radio.is-success input[type=radio]:checked ~ .check-target::after {
     background-color: #14af14;
 }
 
-.form-radio.is-caution .check-target::after,
-.form-radio.is-caution input[type=radio]:checked ~ .check-target::after {
+.field-radio.is-caution .check-target::after,
+.field-radio.is-caution input[type=radio]:checked ~ .check-target::after {
     background-color: #ffba00;
 }
 
-.form-radio.is-warning .check-target::after,
-.form-radio.is-warning input[type=radio]:checked ~ .check-target::after {
+.field-radio.is-warning .check-target::after,
+.field-radio.is-warning input[type=radio]:checked ~ .check-target::after {
     background-color: red;
 }
 
-input,
-select,
-textarea {
+.field {
     padding: .5rem 1rem;
     border: 2px solid #d0d0d0;
     border-radius: 5px;
     outline: none;
     vertical-align: middle;
     font-size: 1rem;
-    transition: border-color .3s cubic-bezier(0.165, 0.84, 0.44, 1), background-color .3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: border-color .3s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                background-color .3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-    input:focus,
-    select:focus,
-    textarea:focus {
+    .field:not([readonly]):focus {
         border-color: #1888eb;
     }
 
+    .field[readonly],
+    input[readonly] {
+        background-color: rgba(236, 242, 249, 1);
+        color: #777;
+        cursor: no-drop;
+    }
+
+    .field.is-success
     .form-field.is-success {
         border-color: #14af14;
         color: #14af14;
     }
 
+    .field.is-caution,
     .form-field.is-caution {
         border-color: #ffba00;
         color: brown;
     }
 
+    .field.is-warning
     .form-field.is-warning {
         border-color: red;
         color: red;
     }
 
-.form-error {
-    border-color: red;
+.field-error,
+.field-error:focus {
+    background-color: rgba(255, 0, 0, .05);
+    border-color: red !important;
+    color: red;
 }
+
+    .field-error::-webkit-input-placeholder {
+        color: rgba(255, 0, 0, .7);
+    }
+
+    .field-error::-moz-input-placeholder {
+        color: rgba(255, 0, 0, .7);
+    }
+
+    .field-error::input-placeholder {
+        color: rgba(255, 0, 0, .7);
+    }
+
+.error-message {
+    position: relative;
+    display: block;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    color: red;
+}
+
+    .error-message::before {
+        content: '*';
+        color: red;
+    }
 
 .form-file {
     display: inline-block;
@@ -777,6 +812,7 @@ textarea {
             background-color: #cb2026;
         }
 
+.field[type=submit],
 input[type=submit] {
     padding: .5rem 2rem;
     background-color: #14af14;
@@ -784,10 +820,20 @@ input[type=submit] {
     color: white;
     font-weight: 700;
     cursor: pointer;
+    outline: none;
+    transition: background-color .3s, 
+                box-shadow .3s;
 }
 
+    .field[type=submit]:focus, 
+    input[type=submit]:focus {
+        border-color: transparent;
+    }
+
+    .field[type=submit]:hover,
     input[type=submit]:hover {
         background-color: #099a09;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .2);
     }
 
 /* WIDTH */
@@ -2196,7 +2242,7 @@ input[type=submit] {
     flex-direction: column;
 }
 
-.flex.column-reverse {
+.column-reverse {
     -ms-flex-direction: column-reverse;
     -webkit-flex-direction: column-reverse;
     flex-direction: column-reverse;
@@ -2433,16 +2479,40 @@ input[type=submit] {
 
 /* MAIN LAYOUT CONTAINERS */
 .container {
-    padding-left: 2rem;
-    padding-right: 2rem;
+    position: relative;
+    height: 100%;
 }
 
 .main-content {
     margin-left: 250px;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    padding-left: 2rem;
+    padding: 2rem;
 }
+
+.global-nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .global-nav ul {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 0;
+        margin-left: -1rem;
+    }
+
+        .global-nav li {
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
+            .global-nav li a {
+                display: block;
+                text-decoration: none;
+                color: black;
+            }
 
 .sidebar {
     position: fixed;
@@ -2450,7 +2520,7 @@ input[type=submit] {
     height: 100vh;
     padding-left: 2rem;
     padding-right: 2rem;
-    background-color: white;
+    background-color: #f9fbfd;
     z-index: 1001;
 }
 
@@ -2513,7 +2583,9 @@ input[type=submit] {
         visibility: hidden;
         opacity: 0;
         transform: translate3d(-1rem, 0, 0);
-        transition: transform .3s cubic-bezier(0.165, 0.84, 0.44, 1), opacity .3s cubic-bezier(0.165, 0.84, 0.44, 1), visibility .3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        transition: transform .3s cubic-bezier(.19, 1, .22, 1), 
+                    opacity .3s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                    visibility .3s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
 
         .sidebar .flyout li a {
@@ -2530,7 +2602,6 @@ input[type=submit] {
     .sidebar .site-menu-toggle {
         display: none;
         position: relative;
-        padding-right: 2rem;
         font-weight: 700;
         cursor: pointer;
     }
@@ -2666,7 +2737,7 @@ input[type=submit] {
     background-color: #f9fbfd;
     border-left: 5px solid black;
     border-radius: 5px;
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .2);
+    /* box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .2); */
 }
 
     .notice.is-thin {
@@ -3186,6 +3257,48 @@ details {
     display: none;
 }
 
+/* PAGER */
+.pager {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+    .main-content .wrapper > .pager {
+        margin-top: 0;
+    }
+
+    .pager .page {
+        display: block;
+        padding: .5rem 1rem;
+        border: 1px solid #1888eb;
+        border-right-width: 0;
+        text-decoration: none;
+        transition: background-color .3s, 
+                    color .3s;
+    }
+
+    .pager .page:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .pager .page:last-child {
+        border-right-width: 1px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .pager .page.active,
+    .pager .page:hover {
+        background-color: #1888eb;
+        color: white;
+    }
+
+    .page.disabled {
+        cursor: not-allowed;
+    }
+
+
 @media (max-width: 1024px) {
     .container {
         display: block;
@@ -3195,11 +3308,12 @@ details {
         width: 100%;
         padding-top: 100px;
         margin-left: 0;
-        padding-left: 0;
     }
 
     .page-heading {
         margin-top: 1rem;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
     }
 
     .sidebar {
@@ -3208,12 +3322,13 @@ details {
         -webkit-justify-content: space-between;
         justify-content: space-between;
         position: fixed;
-        left: 2rem;
-        right: 2rem;
+        left: 0;
+        right: 0;
         width: auto;
         height: 100px;
-        padding-left: 0;
-        padding-right: 0;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        background-color: white;
         z-index: 888;
     }
 
@@ -3225,16 +3340,17 @@ details {
 
         .sidebar .site-menu {
             position: absolute;
-            top: 100%;
-            width: 100%;
-            padding: 2rem;
+            top: 0;
+            left: 1rem;
+            right: 1rem;
+            padding: 100px 2rem 2rem;
             background-color: white;
             border-bottom-right-radius: 5px;
             border-bottom-left-radius: 5px;
             box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .2);
             opacity: 0;
             visibility: hidden;
-            transform: translate3d(0, -130%, 0);
+            transform: translate3d(0, -66.67%, 0);
         }
 
             .sidebar .site-menu[class*='is-'] {
