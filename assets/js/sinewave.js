@@ -142,17 +142,17 @@
         this.modal.insertAdjacentElement('afterbegin', this.modalControlBar);
 
         if (this.o.minimized !== false && typeof this.o.minimized === 'boolean') {
-            this.minimizeButton = create('div', '<img src="../img/minimize.svg" alt="Modal dialog minimize icon">', 'sw-modal-control-button sw-modal-minimize');
+            this.minimizeButton = create('div', '<img src="assets/img/minimize.svg" alt="Modal dialog minimize icon">', 'sw-modal-control-button sw-modal-minimize');
             this.modalControlBar.insertAdjacentElement('beforeend', this.minimizeButton);
         }
 
         if (this.o.maximized !== false && typeof this.o.maximized === 'boolean') {
-            this.maximizeButton = create('div', '<img src="../img/maximize.svg" alt="Modal dialog maximize icon">', 'sw-modal-control-button sw-modal-maximize');
+            this.maximizeButton = create('div', '<img src="assets/img/maximize.svg" alt="Modal dialog maximize icon">', 'sw-modal-control-button sw-modal-maximize');
             this.modalControlBar.insertAdjacentElement('beforeend', this.maximizeButton);
         }
 
         // create the modal close button
-        this.closeButton = create('div', '<img src="../img/close.svg" alt="Modal dialog close icon">', 'sw-modal-control-button sw-modal-close');
+        this.closeButton = create('div', '<img src="assets/img/close.svg" alt="Modal dialog close icon">', 'sw-modal-control-button sw-modal-close');
         this.modalControlBar.appendChild(this.closeButton);
 
         if (this.o.title != null) {
@@ -315,7 +315,7 @@
 
         if (this.o.title != null) {
             this.o.title = this.o.title;
-            this.toast.appendChild(create('h4', this.o.title, 'toast-title'));
+            this.toast.appendChild(create('h4', this.o.title, 'sw-toast-title'));
         }
 
         if (this.o.content != null) {
@@ -324,7 +324,7 @@
             } else {
                 this.o.content = this.o.content;
             }
-            this.toast.appendChild(create('div', this.o.content, 'toast-content'));
+            this.toast.appendChild(create('div', this.o.content, 'sw-toast-content'));
         }
 
         if (this.o.type) {
@@ -346,7 +346,7 @@
             }
 
             // create progress animation
-            var progress = create('div', '', 'toast-progress');
+            var progress = create('div', '', 'sw-toast-progress');
             this.toast.insertAdjacentElement('beforeend', progress);
             progress.style.animation = '_toastProgress ' + this.o.timeout + 'ms linear forwards';
 
@@ -399,7 +399,8 @@
 
         var config = {
             selector: null,
-            startYear: null
+            startYear: null,
+            placeholder: ''
         };
 
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -537,7 +538,12 @@
     function renderSWCalendarOptions() {
         var self = this;
         [].forEach.call(this.field, function (input) {
-            input.placeholder = 'mm/dd/yyyy';
+            if(!input.placeholder && self.o.placeholder == '') {
+                input.placeholder = 'mm/dd/yyyy';
+            }
+            else {
+                input.placeholder = self.o.placeholder
+            }
         });
     }
 
@@ -799,8 +805,14 @@
         });
     });
 
+    window.addEventListener('load', function() {
+        document.body.classList.remove('preload');
+    }, false);
+
     window.addEventListener('resize', function () {
-        siteMenu.className = 'site-menu';
+        if(!siteMenu.classList.contains('site-menu')) {
+            siteMenu.classList.add('site-menu');
+        }
     }, false);
 
 })();
