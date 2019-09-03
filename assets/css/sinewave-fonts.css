@@ -59,8 +59,8 @@
     font-style: normal;
     font-weight: 600;
     src: local('Nunito Sans SemiBold'), local('NunitoSans-SemiBold'),
-         url('../fonts/nunito/nunito-sans-v5-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-         url('../fonts/nunito/nunito-sans-v5-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+         url('../fonts/nunito-sans/nunito-sans-v5-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('../fonts/nunito-sans/nunito-sans-v5-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
   }
   /* nunito-sans-700 - latin */
   @font-face {
@@ -68,8 +68,8 @@
     font-style: normal;
     font-weight: 700;
     src: local('Nunito Sans Bold'), local('NunitoSans-Bold'),
-         url('../fonts/nunito/nunito-sans-v5-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-         url('../fonts/nunito/nunito-sans-v5-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+         url('../fonts/nunito-sans/nunito-sans-v5-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('../fonts/nunito-sans/nunito-sans-v5-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
   }
   /* nunito-sans-800 - latin */
   @font-face {
@@ -77,8 +77,8 @@
     font-style: normal;
     font-weight: 800;
     src: local('Nunito Sans ExtraBold'), local('NunitoSans-ExtraBold'),
-         url('../fonts/nunito/nunito-sans-v5-latin-800.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-         url('../fonts/nunito/nunito-sans-v5-latin-800.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+         url('../fonts/nunito-sans/nunito-sans-v5-latin-800.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('../fonts/nunito-sans/nunito-sans-v5-latin-800.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
   }
   /* nunito-sans-900 - latin */
   @font-face {
@@ -86,6 +86,6 @@
     font-style: normal;
     font-weight: 900;
     src: local('Nunito Sans Black'), local('NunitoSans-Black'),
-         url('../fonts/nunito/nunito-sans-v5-latin-900.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-         url('../fonts/nunito/nunito-sans-v5-latin-900.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+         url('../fonts/nunito-sans/nunito-sans-v5-latin-900.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('../fonts/nunito-sans/nunito-sans-v5-latin-900.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
   }
