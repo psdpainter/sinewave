@@ -2698,11 +2698,13 @@ input[type=submit] {
         justify-content: flex-start;
         margin: 0;
         margin-left: -1rem;
+        padding: 0;
     }
 
         .global-nav li {
             margin-left: 1rem;
             margin-right: 1rem;
+            list-style-type: none;
         }
 
             .global-nav li a {
