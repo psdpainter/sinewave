@@ -1,4 +1,4 @@
-(function () {
+;(function () {
 
     function create(node, text, styles, attrs) {
         node = document.createElement(node);
@@ -60,205 +60,282 @@
     }
 
     // MODAL COMPONENT
-    this.SWModal = function (options, callback) {
+    this.SWModal = function(options, callback) {
         this.container = null;
-        this.overlay = null;
         this.modal = null;
-        this.modalControlBar = null;
-        this.buttonControlBar = null;
-        this.minimizeButton = null;
-        this.maximizeButton = null;
-        this.closeButton = null;
-
-        // button controls
-        this.destroyButton = null;
-        this.submitButton = null;
+        this.overlay = null;
+        this.title = null;
+        this.content = null;
+        this.contentWrapper = null;
+        this.buttonControls = null;
 
         var config = {
-            width: 'auto',
-            height: 'auto',
-            title: null,
-            content: null,
-            overflow: false,
-            minimized: false,
-            maximized: false,
-            buttonControls: {
-                spacing: null,  // string that accepts 'between', 'start', and 'end'
-                buttons: null   // array that accepts object { type: 'cancel/submit', text: '{string}' }
-            }
+            width: 'auto',              // integer based width of the modal
+            height: 'auto',             // integer based height of the modal
+            customClasses: [],          // array of custom class names to be added to the dialog
+            minimize: false,            // allows modal to be minimized
+            maximize: false,            // allows modal to be maximized
+            smallerIcons: false,        // true to decrease size if modal control buttons
+            buttons: {
+                render: false,          // determines if the button control bar should be appended to the modal, thus allowing buttons
+                customClasses: [],      // array of custom classes
+                align: 'start'          // valid options are 'start', 'end', 'around', 'between'
+            },
+            onClose: null,              // event callback     
+            onDestroy: null             // event callback
         };
 
-        if (options && typeof options === 'object' && isNaN(options)) {
+        if(options && typeof options === 'object' && isNaN(options)) {
             this.o = extend(config, options);
         }
         else {
             this.o = config;
         }
 
-        this.container = document.querySelector('.sw-modal-container');
+        this.init(); 
 
-        if (!this.container) {
-            this.container = create('div', '', 'sw-modal-container');
-            this.overlay = create('div', '', 'sw-modal-overlay');
-            this.container.insertAdjacentElement('afterbegin', this.overlay);
-            document.body.insertAdjacentElement('beforeend', this.container);
-
-            renderModal.call(this);
-        }
-
-        if (typeof callback === 'function') {
+        if(typeof callback === 'function') {
             callback.call(this);
         }
     };
 
-    function renderModal() {
-        this.modal = create('div', '', 'sw-modal');
-        this.contentWrapper = create('div', '', 'sw-modal-content-wrapper');
-        this.modal.appendChild(this.contentWrapper);
-        this.container.appendChild(this.modal);
-
-        renderModalOptions.call(this);
-    }
-
-    function renderModalOptions() {
-        var self = this,
-            w = this.o.width,
-            h = this.o.height;
-        if (this.o.width > window.innerWidth) {
-            w = window.innerWidth;
-        }
-        if (this.o.height > window.innerHeight) {
-            h = window.innerHeight;
-        }
-
-        // set default height
-        typeof h !== 'number' && isNaN(h) ? this.modal.style['height'] = 'auto' : this.modal.style['height'] = h + 'px';
-
-        // set default width
-        typeof w !== 'number' && isNaN(w) ? this.modal.style['width'] = 'auto' : this.modal.style['width'] = w + 'px';
-
-        // modal control buttons
-        this.modalControlBar = create('div', '', 'sw-modal-controls');
-        this.modal.insertAdjacentElement('afterbegin', this.modalControlBar);
-
-        if (this.o.minimized !== false && typeof this.o.minimized === 'boolean') {
-            this.minimizeButton = create('div', '<img src="assets/img/minimize.svg" alt="Modal dialog minimize icon">', 'sw-modal-control-button sw-modal-minimize');
-            this.modalControlBar.insertAdjacentElement('beforeend', this.minimizeButton);
-        }
-
-        if (this.o.maximized !== false && typeof this.o.maximized === 'boolean') {
-            this.maximizeButton = create('div', '<img src="assets/img/maximize.svg" alt="Modal dialog maximize icon">', 'sw-modal-control-button sw-modal-maximize');
-            this.modalControlBar.insertAdjacentElement('beforeend', this.maximizeButton);
-        }
-
-        // create the modal close button
-        this.closeButton = create('div', '<img src="assets/img/close.svg" alt="Modal dialog close icon">', 'sw-modal-control-button sw-modal-close');
-        this.modalControlBar.appendChild(this.closeButton);
-
-        if (this.o.title != null) {
-            this.o.title = this.o.title;
-            this.contentWrapper.insertAdjacentElement('afterbegin', create('div', this.o.title, 'sw-modal-title'));
-        }
-
-        if (this.o.content != null) {
-            this.o.content = this.o.content.innerHTML || this.o.content;
-            if (typeof this.o.content === 'function') {
-                this.o.content = this.o.content();
-            }
-            this.contentWrapper.appendChild(create('div', '<div class="sw-modal-inner">' + this.o.content + '</div>', 'sw-modal-content'));
-        }
-
-        if (typeof this.o.buttonControls === 'object') {
-            if (this.o.buttonControls.buttons != null) {
-                this.buttonControlBar = create('div', '', 'sw-modal-button-controls');
-                this.modal.insertAdjacentElement('beforeend', this.buttonControlBar);
-
-                var buttons = searchObject(this.o.buttonControls, 'buttons');
-                if (buttons != null && buttons.length > 0) {
-                    for (var i = 0; i < buttons.length; i++) {
-                        var button = buttons[i];
-                        createButtonControl.call(self.buttonControlBar, button.type, button.text);
-                    }
-                }
-
-                var spacing = this.o.buttonControls.spacing;
-                if (spacing != null) {
-                    switch (spacing) {
-                        case 'between': this.buttonControlBar.classList.add('between'); break;
-                        case 'end': this.buttonControlBar.classList.add('end'); break;
-                        default: this.buttonControlBar.classList.add('start');
-                    }
-                }
-                
-                this.destroyButton = this.buttonControlBar.querySelector('.sw-destroy');
-                this.submitButton = this.buttonControlBar.querySelector('.sw-submit');
-
-                if (this.destroyButton != null) {
-                    this.destroyButton.addEventListener('click', this.destroy.bind(this));
-                }
-                if (this.submitButton != null) {
-                    this.submitButton.addEventListener('click', this.cancel.bind(this));
-                }
-            }
-        }
-
-        // click events
-        this.container.addEventListener('click', this.clickOutsideToClose.bind(this));
-        this.minimizeButton.addEventListener('click', this.minimize.bind(this));
-        this.maximizeButton.addEventListener('click', this.maximize.bind(this));
-        this.closeButton.addEventListener('click', this.cancel.bind(this));
-    }
-
-    function createButtonControl(type, text) {
-        var classType = type == 'destroy' ? 'is-warning sw-destroy' : type == 'submit' ? 'is-success sw-submit' : '';
-        if (type == 'destroy') {
-            this.destroyButton = create('button', text == '' ? type : text, 'button ' + classType + ' sw-modal-button');
-            this.appendChild(this.destroyButton);
-        }
-        if (type == 'submit') {
-            this.submitButton = create('button', text == '' ? type : text, 'button ' + classType + ' sw-modal-button');
-            this.appendChild(this.submitButton);
-        }
-    }
-
     SWModal.prototype = {
-        open: function () {
-            if (!this.container.classList.contains('is-open')) {
-                this.container.classList.add('is-open');
+        init: function() {
+            if(this.modal) {
+                return;
             }
+
+            // build the modal html
+            buildModal.call(this);
+
+            // bind the modal's event listeners
+            bindModalEvents.call(this);
+    
+            return this;
         },
-        destroy: function () {
+        open: function() {
+            if(this.container !== null) {
+                if(!this.container.classList.contains('is-open')) {
+                    this.container.classList.add('is-open');
+                }
+
+                if (typeof this.o.onOpen === 'function') {
+                    this.o.onOpen.call(this);
+                }
+            }
+            return this;
+        }, 
+        close: function () {
             var self = this;
-            var timeout = window.setTimeout(function () {
-                self.container.className = 'sw-modal-container';
-                window.setTimeout(function () {
-                    self.container.parentNode.removeChild(self.container);
-                }, 500);
-                window.clearTimeout(timeout);
-            }, 100);
+            if(typeof this.o.onClose === 'function') {
+                this.o.onClose.call(this);
+            }            
+
+            this.container.className = 'sw-modal-container ';
+            this.container.className += this.o.customClasses.join(' ');
         },
-        cancel: function () {
-            this.container.className = 'sw-modal-container';
-        },
-        clickOutsideToClose: function () {
-            var target = window.event.target;
-            if (this.container.contains(target) && !this.modal.contains(target)) {
-                this.container.className = 'sw-modal-container';
+        destroy: function() {
+            if (this.modal === null) {
+                return;
+            }    
+
+            if(typeof this.o.onDestroy === 'function') {
+                this.o.onDestroy.call(this);
             }
+
+            this.minimizeButton.removeEventListener('click', this.isMinimized);
+            this.maximizeButton.removeEventListener('click', this.isMaximized);
+            this.closeButton.removeEventListener('click', this.close);
+            this.container.parentNode.removeChild(this.container)
+            this.container = null;
         },
-        minimize: function () {
+        isMinimized: function () {
             this.container.classList.toggle('is-minimized');
+            if(this.container.classList.contains('is-minimized')) {
+                this.modal.style.height = 'auto';
+            }
+            else {
+                this.modal.style.height = this.o.height + 'px';
+            }
+
+            // remove the maximized class if the modal was previously maximized
             if (this.container.classList.contains('is-maximized')) {
                 this.container.classList.remove('is-maximized');
             }
         },
-        maximize: function () {
+        isMaximized: function () {
             this.container.classList.toggle('is-maximized');
+
+            // remove the minimized class if the modal was previously minimized
             if (this.container.classList.contains('is-minimized')) {
                 this.container.classList.remove('is-minimized');
             }
+        },
+        setTitle: function(title) {
+            if(typeof title === 'string') {
+                this.title.innerText = title;
+            }
+            return this;
+        }, 
+        setContent: function(content) {
+            if (typeof content === 'string') {
+                this.content.innerHTML = content;
+            } 
+            else {
+                this.content.innerHTML = ''
+                this.content.appendChild(content);
+            }
+            return this;
+        },
+        clickOutsideToClose: function () {
+            var target = window.event.target;
+            if(this.container != null) {
+                if (this.container.contains(target) && !this.modal.contains(target)) {
+                    this.container.className = 'sw-modal-container';
+                }
+            }
+        },
+        addButton: function(label, styles, callback) {
+            if(this.o.buttons.render == true) {
+                var button = create('button', label, 'button sw-modal-button');
+                var classType = getType(styles);
+
+                if(classType == '[object Array]') {
+                    button.classList.add.apply(button.classList, styles);
+                }
+                else if(classType == '[object String]') {
+                    button.classList.add(styles);
+                }
+
+                this.buttonControls.appendChild(button);
+                
+                // ensure the button has a callback event wired up
+                button.addEventListener('click', callback.bind(this, button));
+                
+                return button;
+            }
         }
+    };
+
+    function buildModal() {
+        this.container = create('div', '', 'sw-modal-container');
+        this.modal = create('div', '', 'sw-modal');
+        this.overlay = create('div', '', 'sw-modal-overlay');
+        this.controls = create('div', '', 'sw-modal-controls');
+        this.closeButton = create('div', '<img src="assets/img/close.svg" alt="Modal dialog close icon">', 'sw-modal-control-button sw-modal-close');
+
+        // set modal content
+        this.container.insertAdjacentElement('afterbegin', this.overlay);
+        this.container.appendChild(this.modal);
+        this.modal.insertAdjacentElement('afterbegin', this.controls);
+
+        // append the close button
+        this.controls.insertAdjacentElement('beforeend', this.closeButton);
+
+        // create the content container
+        this.contentWrapper = create('div', '', 'sw-modal-content-wrapper');
+        this.content = create('div', '', 'sw-modal-inner');
+
+        // create the title bar
+        this.title = create('div', '', 'sw-modal-title');
+        this.contentWrapper.appendChild(this.title);
+
+        this.contentWrapper.appendChild(this.content);
+
+        this.modal.appendChild(this.contentWrapper);
+
+        // append the modal as the last element in the document
+        document.body.insertAdjacentElement('beforeend', this.container);
+
+        // apply modal options
+        setModalOptions.call(this);
     }
+
+    function setModalOptions() {
+        var self = this;
+        var w = this.o.width;
+        var h = this.o.height;
+
+        if (this.o.width > window.innerWidth) {
+            w = window.innerWidth - 32;
+        }
+        if (this.o.height > window.innerHeight) {
+            h = window.innerHeight - 32;
+            this.contentWrapper.style.overflowY = 'auto';
+        }
+
+        // set default width
+        if(typeof w !== 'number' && isNaN(w)) {
+            this.modal.style['width'] = 'auto';
+        } 
+        else {
+            this.modal.style['width'] = w + 'px';
+        }
+
+        // set default height
+        if(typeof h !== 'number' && isNaN(h)) {
+            this.modal.style['height'] = 'auto';
+        } 
+        else {
+            this.modal.style['height'] = h + 'px';
+        }
+
+        if(this.o.smallerIcons !== false) {
+            this.controls.classList.add('smaller-icons');
+        }
+
+        if (this.o.maximize !== false && typeof this.o.maximize === 'boolean') {
+            this.maximizeButton = create('div', '<img src="assets/img/maximize.svg" alt="Modal dialog maximize icon">', 'sw-modal-control-button sw-modal-maximize');
+            this.controls.insertAdjacentElement('afterbegin', this.maximizeButton);
+
+            // wire up maximize button click event
+            this.maximizeButton.addEventListener('click', this.isMaximized.bind(this));
+        }
+
+        if (this.o.minimize !== false && typeof this.o.minimize === 'boolean') {
+            this.minimizeButton = create('div', '<img src="assets/img/minimize.svg" alt="Modal dialog minimize icon">', 'sw-modal-control-button sw-modal-minimize');
+            this.controls.insertAdjacentElement('afterbegin', this.minimizeButton);
+
+            // wire up minimize button click event
+            this.minimizeButton.addEventListener('click', this.isMinimized.bind(this));
+        }
+
+        // add custom class names so long as they're pushed into an array
+        if(this.o.customClasses.length > 0) {
+            this.container.classList.add.apply(this.container.classList, this.o.customClasses);
+        }
+
+        // set the button control alignment
+        if(this.o.buttons.render == true) {
+            // create the button controls bar: append items based on options
+            this.buttonControls = create('div', '', 'sw-modal-button-controls');
+            this.modal.appendChild(this.buttonControls);
+
+            // set the button controls flex alignment if the property is set
+            if(this.o.buttons.align != '') {
+                switch(this.o.buttons.align) {
+                    case 'start': this.buttonControls.classList.add('start'); break;
+                    case 'end': this.buttonControls.classList.add('end'); break;
+                    case 'around': this.buttonControls.classList.add('around'); break;
+                    case 'between': this.buttonControls.classList.add('between'); break;
+                }
+            }
+
+            // optionally pass in custom button class names
+            if(this.o.buttons.customClasses && this.o.buttons.customClasses.length > 0) {
+                this.buttonControls.classList.add.apply(this.buttonControls.classList, this.o.buttons.customClasses);
+            }
+        }
+
+        // wire up close button click event
+        this.closeButton.addEventListener('click', this.close.bind(this));
+
+        // close the modal when you click outside of it
+        this.container.addEventListener('click', this.clickOutsideToClose.bind(this));
+
+    }
+
+    function bindModalEvents() {}
 
     // TOAST COMPONENT
     this.SWToast = function (options, callback) {
@@ -374,143 +451,118 @@
         }
     };
 
-    // CALENDAR COMPONENT
-    this.SWCalendar = function (options, callback) {
+    this.SWDatepicker = function(options, callback) {
         var self = this;
-        this.calendar = null;
-        this.container = null;
-        this.viewport = null;
-        this.views = null;
-        this.controller = null;
-        this.days = null;
+        this.datepicker = null;
+        this.wrapper = null;
         this.months = null;
+        this.days = null;
         this.years = null;
-        this.monthsHeader = null;
-        this.daysHeader = null;
-        this.yearsHeader = null;
         this.currentField = null;
         this.currentFieldValue = ['mm', 'dd', 'yyyy'];
-        this.startYear = null;
-        this.date = new Date();
         this.position = {
             x: null,
             y: null
         };
-
+        
+        var _date = new Date();
+        var _offset = 30;
+        var _months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
         var config = {
-            selector: null,
             startYear: null,
-            placeholder: ''
+            endYear: null,
+            sticky: false
         };
-
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        if (options && typeof options === 'object' && isNaN(options)) {
+        
+        if(options && typeof options === 'object' && isNaN(options)) {
             this.o = extend(config, options);
         }
         else {
             this.o = config;
         }
-
+        
         this.field = document.querySelectorAll(this.o.selector);
+        
+        if(!document.body.contains(this.datepicker)) {
+            this.datepicker = create('div', '', 'sw-datepicker');
+            this.wrapper = create('div', '', 'sw-datepicker-wrapper');
 
-        if (!document.body.contains(this.calendar)) {
-            // main calendar 
-            this.calendar = create('div', '', 'sw-calendar');
-
-            // inner calendar container
-            this.container = create('div', '', 'sw-calendar-container');
-
-            // main calendar section viewport
-            this.viewport = create('div', '', 'sw-calendar-viewport');
-
-            // overflow wrapper for all views
-            this.views = create('div', '', 'sw-calendar-views');
-
-            // create the view containers
-            this.months = create('div', '', 'sw-calendar-view sw-view-months');
-            this.days = create('div', '', 'sw-calendar-view sw-view-days');
-            this.years = create('div', '', 'sw-calendar-view sw-view-years');
-
-            // create the view headers
-            this.monthsHeader = create('div', 'Months', 'sw-calendar-view-header');
-            this.daysHeader = create('div', 'Days', 'sw-calendar-view-header');
-            this.yearsHeader = create('div', 'Years', 'sw-calendar-view-header');
-
-            this.months.appendChild(this.monthsHeader);
-            this.days.appendChild(this.daysHeader);
-            this.years.appendChild(this.yearsHeader);
-
-            // create buttons for each view
-            var daysFragment = document.createDocumentFragment();
-            var monthsFragment = document.createDocumentFragment();
-            var yearsFragment = document.createDocumentFragment();
-
-            for (var m = 0; m < months.length; m++) {
-                var month = create('div', months[m], 'sw-calendar-view-button month', {
-                    'data-month': (m < 10 ? '0' + (m + 1): m + 1)
+            if(this.o.sticky !== false) {
+                this.datepicker.classList.add('is-sticky');
+            }
+    
+            // create the months column
+            this.months = create('div', '', 'sw-datepicker-column sw-datepicker-months');
+    
+            // create each month
+            for (var m = 0; m < _months.length; m++) {
+                var mm = m + 1;
+                var month = create('div', _months[m], 'sw-datepicker-value sw-datepicker-month', {
+                    'data-month': mm < 10 ? '0' + mm: mm
                 });
-                monthsFragment.appendChild(month);
+                this.months.appendChild(month);
             }
-
+    
+            this.wrapper.appendChild(this.months);
+    
+            // create the days column
+            this.days = create('div', '', 'sw-datepicker-column sw-datepicker-days');
+    
+            // create each day
             for (var d = 1; d <= 31; d++) {
-                var day = create('div', d < 10 ? '0' + d : d, 'sw-calendar-view-button day');
-                daysFragment.appendChild(day);
+                var day = create('div', d < 10 ? '0' + d : d, 'sw-datepicker-value sw-datepicker-day');
+                this.days.appendChild(day);
             }
-
+    
+            this.wrapper.appendChild(this.days);
+    
+            // create the years column
+            this.years = create('div', '', 'sw-datepicker-column sw-datepicker-years');
+    
+            // set the startYear 
             if (this.o.startYear !== null && typeof this.o.startYear == 'number' && !isNaN(this.o.startYear)) {
                 this.startYear = this.o.startYear;
             }
             else {
-                this.startYear = this.date.getFullYear();
+                this.startYear = _date.getFullYear();
             }
 
-            for (var y = this.startYear; y > this.startYear - 24; y--) {
-                var year = create('div', y, 'sw-calendar-view-button year');
-                yearsFragment.appendChild(year);
+            // set the endYear
+            if(this.o.endYear != null && typeof this.o.endYear == 'number' && !isNaN(this.o.endYear)) {
+                this.endYear = this.o.endYear;
+            }
+            else {
+                this.endYear = this.startYear - _offset;
             }
 
-            this.months.appendChild(monthsFragment);
-            this.days.appendChild(daysFragment);
-            this.years.appendChild(yearsFragment);
+            for (var y = this.startYear; y >= this.endYear; y--) {
+                var year = create('div', y, 'sw-datepicker-value sw-datepicker-year');
+                this.years.appendChild(year);
+            }
+    
+            this.wrapper.appendChild(this.years);
 
-            this.views.appendChild(this.months);
-            this.views.appendChild(this.days);
-            this.views.appendChild(this.years);
-
-            this.viewport.appendChild(this.views);
-
-            // controller that contains prev and next buttons
-            this.controller = create('div', '', 'sw-calendar-view-controller');
-            this.monthsButton = create('div', 'MM', 'sw-calendar-view-controller-button sw-month-button');
-            this.daysButton = create('div', 'DD', 'sw-calendar-view-controller-button sw-day-button');
-            this.yearsButton = create('div', 'YYYY', 'sw-calendar-view-controller-button sw-year-button');
-
-            this.controller.appendChild(this.monthsButton);
-            this.controller.appendChild(this.daysButton);
-            this.controller.appendChild(this.yearsButton);
-
-            this.container.appendChild(this.viewport);
-            this.container.appendChild(this.controller);
-            this.calendar.appendChild(this.container);
-            document.body.insertAdjacentElement('beforeend', this.calendar);
+            this.datepicker.appendChild(this.wrapper);
+    
+            document.body.insertAdjacentElement('beforeend', this.datepicker);
 
             this.init();
         }
 
         document.addEventListener('click', function (e) {
             var target = e.target;
-            if (!self.calendar.contains(target) && self.currentField != target) {
-                resetSWCalendarPosition.call(self);
+            if (!self.datepicker.contains(target) && self.currentField != target) {
+                resetSWDatepickerPosition.call(self);
             }
         });
                
         if (typeof callback === 'function') {
-            callback.call(this, this.calendar);
+            callback.call(this, this.datepicker);
         }
-    };
+    }
 
-    function renderSWCalendar(event) {
-        // set the current field 
+    function renderSWDatepicker(event) {
         this.currentField = event.target;
 
         var windowWidth = window.innerWidth;
@@ -521,139 +573,80 @@
         var pageX, pageY;
         var box = this.currentField.getBoundingClientRect();
 
-        if (box.left + 300 > windowWidth) {
-            console.log('SWCalendar has exceeded maximum viewport width');
+        if (box.left + 250 > windowWidth) {
+            console.log('SWDatepicker has exceeded maximum viewport width');
         }
 
         pageX = box.x + window.scrollX;
-        pageY = box.y + window.scrollY + (box.height + 8);
+        
+        if(this.o.sticky !== false) {
+            pageY = box.y + (box.height + 8);
+        }
+        else {
+            pageY = box.y + window.scrollY + (box.height + 8);
+        }
 
-        // clear out the previous view state
-        this.views.className = 'sw-calendar-views';
-
-        // set the calendar position
-        setSWCalendarPosition.call(this, pageX, pageY);
+        // set the datepicker position
+        setSWDatepickerPosition.call(this, pageX, pageY);
     }
 
-    function renderSWCalendarOptions() {
-        var self = this;
-        [].forEach.call(this.field, function (input) {
-            if(!input.placeholder && self.o.placeholder == '') {
-                input.placeholder = 'mm/dd/yyyy';
-            }
-            else {
-                input.placeholder = self.o.placeholder
-            }
-        });
-    }
-
-    function setSWCalendarPosition(x, y) {
+    function setSWDatepickerPosition(x, y) {
         this.position.x = x;
         this.position.y = y;
-        this.calendar.style.left = this.position.x + 'px';
-        this.calendar.style.top = this.position.y + 'px';
-        this.calendar.classList.add('is-visible');
+        this.datepicker.style.left = this.position.x + 'px';
+        this.datepicker.style.top = this.position.y + 'px';
+        this.datepicker.classList.add('is-visible');
     }
 
-    function resetSWCalendarPosition() {
-        this.currentFieldValue = [];
-        this.calendar.style.left = 0;
-        this.calendar.style.top = 0;
-        this.calendar.classList.remove('is-visible');
-        removeSelectedClassNames.call(this);
+    function resetSWDatepickerPosition() {
+        this.currentFieldValue = [01, 01, this.startYear];
+        this.datepicker.style.left = 0;
+        this.datepicker.style.top = 0;
+        this.datepicker.classList.remove('is-visible');
     }
 
-    SWCalendar.prototype = {
-        init: function () {
+    SWDatepicker.prototype = {
+        init: function() {
             var self = this;
 
-            // clear out any position and styles on load
-            resetSWCalendarPosition.call(this);
-
-            // progress the calendar to each date view 
-            this.monthsButton.addEventListener('click', this.goToMonths.bind(this));
-            this.daysButton.addEventListener('click', this.goToDays.bind(this));
-            this.yearsButton.addEventListener('click', this.goToYears.bind(this));
-
-            // testing out setting field values based on clicking the parent view and not inside each child view
-            
+            resetSWDatepickerPosition.call(this);
 
             // set the input date
             this.days.addEventListener('click', this.setDate.bind(this));
             this.months.addEventListener('click', this.setDate.bind(this));
             this.years.addEventListener('click', this.setDate.bind(this));
 
-            // render and set calendar options
             for (var i = 0, len = this.field.length; i < len; i++) {
                 if (this.field[i].nodeName !== 'INPUT' && this.field[i].getAttribute('type') !== 'text') {
-                    throw new Error('Cannot render SW Calendar. Check the node type and ensure it is an \'INPUT\' element with a \'type\' of \'text\' ');
+                    throw new Error('Cannot render SW Datepicker. Check the node type and ensure it is an \'INPUT\' element with a \'type\' of \'text\' ');
                 }
                 else {
+                    this.field[i].placeholder = 'mm/dd/yyyy';
                     this.field[i].addEventListener('click', function (e) {
                         this.select();
-                        renderSWCalendar.call(self, e);
-                        removeSelectedClassNames.call(self);
+                        renderSWDatepicker.call(self, e);
                     });
-                    renderSWCalendarOptions.call(this);
                 }
             }
 
-            // if the calendar is open and you resize the browser, reset it
-            window.addEventListener('resize', resetSWCalendarPosition.bind(this));
-        },
-        goToDays: function (event) {
-            this.views.className = 'sw-calendar-views focus-days';
-        }, 
-        goToMonths: function (event) {
-            this.views.className = 'sw-calendar-views focus-months';
-        },
-        goToYears: function (event) {
-            this.views.className = 'sw-calendar-views focus-years';
+            window.addEventListener('resize', resetSWDatepickerPosition.bind(this));
         },
         setDate: function (event) {
-            var target = event.target;
             var self = this;
-            if (target.classList.contains('sw-calendar-view-button')) {
-                var views = ['month', 'day', 'year'];
-                var fieldValue = '';
-                for (var v = 0; v < 3; v++) {
-                    var _view = views[v];
-                    if (target.classList.contains(_view)) {
-                        self[_view + 'sHeader'].classList.add('is-selected');
-                        self[_view + 'sButton'].classList.add('is-selected');
+            var target = event.target;
 
-                        // remove all sibling 'is-selected' class names
-                        var siblings = getSiblings('.' + target.classList[0], '.' + _view);
-                        removeClass(siblings, 'is-selected');
-
-                        if (_view == 'month') {
-                            self.currentFieldValue.splice(0, 1, target.getAttribute('data-month'));
-                        }
-                        else if (_view == 'day') {
-                            self.currentFieldValue.splice(1, 1, target.innerText);
-                        }
-                        else {
-                            self.currentFieldValue.splice(2, 1, target.innerText);
-                        }
-                        self.currentField.value = self.currentFieldValue.join('/');
-                    }
-                }
-                //target.classList.add('is-selected');
+            if (target.classList.contains('sw-datepicker-month')) {
+                self.currentFieldValue[0] =target.getAttribute('data-month');
             }
-        }
-    }
-
-    function removeSelectedClassNames() {
-        var allNodes = this.container.querySelectorAll('*');
-        for (var n = 0, len = allNodes.length; n < len; n++) {
-            if (allNodes[n].classList.contains('is-selected')) {
-                allNodes[n].classList.remove('is-selected');
+            else if (target.classList.contains('sw-datepicker-day')) {
+                self.currentFieldValue[1] = target.innerText;
             }
-        }
-    }
+            else {
+                self.currentFieldValue[2] = target.innerText;
+            }
 
-    function getSiblings(accessor, node) {
-        return document.querySelectorAll(accessor + node);
+            self.currentField.value = self.currentFieldValue.join('/');
+        }
     }
 
     // TABS
@@ -744,6 +737,18 @@
             }, false);
         });
     }
+
+    // close all sibling details nodes if they're open
+    [].forEach.call(details, function(e) {
+        e.addEventListener('click', function() {
+            if(this.classList.contains('is-open')) {
+                // remove the class name (for IE only)
+            }
+            else if(this.hasAttribute('open')) {
+                // remove the 'open' attribute on other smart browsers
+            }
+        }, false);
+    });
 
     // SWITCHES
     var switches = document.querySelectorAll('.switch');
