@@ -146,6 +146,25 @@ h1, h2, h3, h4, h5, h6, input, select, textarea {
         color: white;
     }
 
+.blades {
+    position: absolute;
+    top: 0;
+    right: -4rem;
+    width: 500px;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+    .blade {
+        width: 100px;
+        height: 500px;
+        margin-left: 4rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: rotate(45deg);
+    }
+
 blockquote {
     margin-left: 2rem;
     margin-right: 2rem;
