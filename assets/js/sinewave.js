@@ -649,6 +649,18 @@
         }
     }
 
+    // PAGE HEADING BLADES
+    var pageHeading = document.querySelector('.page-heading');
+    if(pageHeading) {
+        var blades = create('div', '', 'blades');
+        var b = 0;
+        for(b; b < 3; b++) {
+            var blade = create('div', '', 'blade');
+            blades.appendChild(blade);
+        }
+        pageHeading.insertAdjacentElement('afterbegin', blades);
+    }
+
     // TABS
     var tabs = document.querySelectorAll('.tabs');
     if (tabs) {
