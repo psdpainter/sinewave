@@ -741,12 +741,15 @@
     // close all sibling details nodes if they're open
     [].forEach.call(details, function(e) {
         e.addEventListener('click', function() {
-            if(this.classList.contains('is-open')) {
-                // remove the class name (for IE only)
-            }
-            else if(this.hasAttribute('open')) {
-                // remove the 'open' attribute on other smart browsers
-            }
+            var ctx = this;
+            [].filter.call(details, function(d) {
+                if(d.hasAttribute('open')) {
+                    return d !== ctx ? d.removeAttribute('open') : null;
+                }
+                else if(d.classList.contains('is-open')) {
+                    return d !== ctx ? d.classList.remove('is-open') : null;
+                }
+            });
         }, false);
     });
 
