@@ -128,10 +128,12 @@ h1, h2, h3, h4, h5, h6, input, select, textarea {
             }
 
 .page-heading {
+    position: relative;
     margin-top: 2rem;
     padding: 2rem;
     background: linear-gradient(to bottom right, #0068b1, #1888eb);
     border-radius: 5px;
+    overflow: hidden;
 }
 
     .page-heading > h1,
@@ -144,6 +146,25 @@ h1, h2, h3, h4, h5, h6, input, select, textarea {
     .page-heading > * {
         margin: 0;
         color: white;
+    }
+
+.blades {
+    position: absolute;
+    top: 0;
+    right: -4rem;
+    width: 500px;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+    .blade {
+        width: 100px;
+        height: 500px;
+        margin-left: 4rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: rotate(45deg);
     }
 
 blockquote {
@@ -2685,10 +2706,6 @@ input[type=submit] {
     padding: 2rem;
 }
 
-.wrapper {
-    margin-top: 2rem;
-}
-
 .global-nav {
     position: relative;
     display: flex;
@@ -2776,10 +2793,6 @@ input[type=submit] {
 
     .sidebar .site-menu {
         padding-bottom: 2rem;
-    }
-
-    .sidebar .site-menu.auto-scroll {
-        overflow-y: auto;
     }
 
         .sidebar .site-menu ul {
