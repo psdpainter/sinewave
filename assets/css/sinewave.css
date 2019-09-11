@@ -2793,6 +2793,7 @@ input[type=submit] {
 
     .sidebar .site-menu {
         padding-bottom: 2rem;
+        overflow-y: auto;
     }
 
         .sidebar .site-menu ul {
