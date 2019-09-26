@@ -1,6 +1,5 @@
 ;(function () {
 
-    //#region Local utility functions
     function create(node, text, styles, attrs) {
         node = document.createElement(node);
         node.innerHTML = (text !== null || text !== undefined) ? text : '';
@@ -44,8 +43,6 @@
     function getType(obj) {
         return Object.prototype.toString.call(obj);
     }
-
-    //#endregion
 
     this.SWModal = function(options, callback) {
         this.container = null;
