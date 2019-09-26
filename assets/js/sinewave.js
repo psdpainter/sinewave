@@ -76,6 +76,9 @@
             minimize: false,            // allows modal to be minimized
             maximize: false,            // allows modal to be maximized
             smallerIcons: false,        // true to decrease size if modal control buttons
+            title: {
+                align: 'left',          // valid options are 'left', 'center', and 'right'
+            },
             buttons: {
                 render: false,          // determines if the button control bar should be appended to the modal, thus allowing buttons
                 customClasses: [],      // array of custom classes
@@ -174,10 +177,20 @@
         setTitle: function(title) {
             if(typeof title === 'string') {
                 this.title.innerText = title;
+                if(this.o.title.align == 'left') {
+                    this.title.classList.add('text', 'is-left');
+                }
+                if(this.o.title.align == 'center') {
+                    this.title.classList.add('text', 'is-center');
+                }
+                if(this.o.title.align == 'right') {
+                    this.title.classList.add('text', 'is-right');
+                }
             }
             return this;
         }, 
         setContent: function(content) {
+            // this.content = null;
             if (typeof content === 'string') {
                 this.content.innerHTML = content;
             } 
@@ -824,6 +837,30 @@
             }
         });
     });
+
+    // AUTO-CALCULATE REFINERS AUTO-SCROLL CONTAINER HEIGHT
+    var siteLogo = document.querySelector('.site-logo');
+    var siteMenu = document.querySelector('.site-menu');
+    if(siteMenu) {
+        var siteMenuNav = siteMenu.firstElementChild;
+        if(siteMenuNav.nodeName == 'UL') {
+            var refiners = siteMenu.querySelector('.refiners');
+            if(refiners) {
+                var siteMenuHeight = siteMenu.getBoundingClientRect().height;                
+                var sidebarHeight = sidebar.getBoundingClientRect().height;
+                var siteLogoHeight = siteLogo.getBoundingClientRect().height + 64;
+                var siteMenuNavHeight = siteMenuNav.getBoundingClientRect().height;
+                var scrollbarThumbHeight = 34;
+
+                if(siteMenuHeight > sidebarHeight) {
+                    var totalSiteMenuNavHeight = siteMenuNavHeight + siteLogoHeight;
+                    var calculatedSidebarOverflowHeight = sidebarHeight - totalSiteMenuNavHeight;
+                    refiners.style.height = (calculatedSidebarOverflowHeight - scrollbarThumbHeight) + 'px';
+                    refiners.classList.add('auto-scroll');
+                }
+            }
+        }
+    }
 
     window.addEventListener('load', function() {
         document.body.classList.remove('preload');
