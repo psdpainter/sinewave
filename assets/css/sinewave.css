@@ -395,6 +395,11 @@ button {
     transition: all .3s;
 }
 
+    .button > span {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
 .button.is-rounded {
     border-radius: 500px;
 }
@@ -419,7 +424,6 @@ a.button {
 
 .button:not(.is-solid):hover {
     background-color: white;
-    /* border-color: #999; */
     color: currentColor;
 }
 
@@ -664,6 +668,30 @@ fieldset {
 
         fieldset.is-success legend {
             background-color: #14af14;
+        }
+
+    fieldset.is-issue {
+        border-color: #9467bd;
+    }
+
+        fieldset.is-issue legend {
+            background-color: #9467bd;
+        }
+         
+    fieldset.is-bug {
+        border-color: #d73a4a;
+    }
+
+        fieldset.is-bug legend {
+            background-color: #d73a4a;
+        }
+         
+    fieldset.is-question {
+        border-color: darkorchid;
+    }
+
+        fieldset.is-question legend {
+            background-color: darkorchid;
         }
 
 .form-row {
@@ -1027,6 +1055,30 @@ input[type=checkbox] {
         .form-file.is-warning > label:hover {
             background-color: #cb2026;
         }
+
+    .form-file.is-issue > label {
+        background-color: #9467bd;
+    }
+
+        .form-file.is-issue > label:hover {
+            background-color: #9467bd;
+        }
+
+    .form-file.is-bug > label {
+        background-color: #d73a4a;
+    }
+
+        .form-file.is-bug > label:hover {
+            background-color: #d73a4a;
+        }
+        
+    .form-file.is-question > label {
+        background-color: darkorchid;
+    }
+
+        .form-file.is-question > label:hover {
+            background-color: darkorchid;
+        }        
 
 .form-submit[type=submit],
 input[type=submit] {
@@ -2896,13 +2948,6 @@ input[type=submit] {
         .sidebar .refiners {
             margin-top: 20px;
         }
-
-            .sidebar .refiners.auto-scroll {
-                margin-right: -2rem;
-                padding-right: 2rem;
-                overflow-y: auto;
-                overflow-x: hidden;
-            }
         
             .sidebar .refiner > * {
                 font-size: 14px;
@@ -3562,6 +3607,46 @@ input[type=submit] {
         background-color: red;
     }
 
+.stepper {
+    display: inline-flex;
+    border: 2px solid #d0d0d0;
+    border-radius: 5px;
+}
+
+    .stepper .button {
+        width: 32px;
+        padding: 0;
+        border: none;
+    }
+
+        .stepper .sw-icon {
+            width: inherit;
+            height: inherit;
+            padding: 4px;
+        }
+
+        .stepper .button:hover {
+            background-color: transparent; 
+            box-shadow: none;
+        }
+
+        .stepper .button:hover > .sw-icon > svg * {
+            fill: #1888eb !important;
+        }
+
+    .stepper input[type=number] {
+        width: 70px;
+        border: none;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .stepper input[type=number]::-webkit-inner-spin-button, 
+    .stepper input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+
 details {
     display: inline-block;
 }
@@ -3763,8 +3848,200 @@ details {
             font-weight: 700;
         }
 
+            /* DETAILS INFO MODIFIER */
+            details.is-help.has-title.is-info > .details-menu .title {
+                background-color: #1888eb;
+                border-bottom-color: transparent;
+                color: white;
+            }
+
+            details.is-help.has-title.is-info > summary,
+            details.is-help.has-title.is-info > .details-menu {
+                border-color: #1888eb;
+            }
+
+            details.is-help.has-title.is-info > .details-menu::before {
+                border-bottom-color: #1888eb;
+            }
+
+            details.is-help.has-title.is-info > .details-menu::after {
+                border-bottom-color: #1888eb;
+            }
+
+            /* DETAILS SUCCESS MODIFIER */
+            details.is-help.has-title.is-success > .details-menu .title {
+                background-color: #14af14;
+                border-bottom-color: transparent;
+                color: white;
+            }
+
+            details.is-help.has-title.is-success > summary,
+            details.is-help.has-title.is-success > .details-menu {
+                border-color: #14af14;
+            }
+
+            details.is-help.has-title.is-success > .details-menu::before {
+                border-bottom-color: #14af14;
+            }
+
+            details.is-help.has-title.is-success > .details-menu::after {
+                border-bottom-color: #14af14;
+            }
+
+            /* DETAILS CAUTION MODIFIER */
+            details.is-help.has-title.is-caution > .details-menu .title {
+                background-color: darkorange;
+                border-bottom-color: transparent;
+                color: white;
+            }
+
+            details.is-help.has-title.is-caution > summary,
+            details.is-help.has-title.is-caution > .details-menu {
+                border-color: darkorange;
+            }
+
+            details.is-help.has-title.is-caution > .details-menu::before {
+                border-bottom-color: darkorange;
+            }
+
+            details.is-help.has-title.is-caution > .details-menu::after {
+                border-bottom-color: darkorange;
+            }
+
+            /* DETAILS WARNING MODIFIER */
+            details.is-help.has-title.is-warning > .details-menu .title {
+                background-color: red;
+                border-bottom-color: transparent;
+                color: white;
+            }
+
+            details.is-help.has-title.is-warning > summary,
+            details.is-help.has-title.is-warning > .details-menu {
+                border-color: red;
+            }
+
+            details.is-help.has-title.is-warning > .details-menu::before {
+                border-bottom-color: red;
+            }
+
+            details.is-help.has-title.is-warning > .details-menu::after {
+                border-bottom-color: red;
+            }
+
+            /* DETAILS ISSUE MODIFIER */
+            details.is-help.has-title.is-issue > .details-menu .title {
+                background-color: #9467bd;
+                border-bottom-color: transparent;
+                color: white;
+            }
+
+            details.is-help.has-title.is-issue > summary,
+            details.is-help.has-title.is-issue > .details-menu {
+                border-color: #9467bd;
+            }
+
+            details.is-help.has-title.is-issue > .details-menu::before {
+                border-bottom-color: #9467bd;
+            }
+
+            details.is-help.has-title.is-issue > .details-menu::after {
+                border-bottom-color: #9467bd;
+            }
+
+            /* DETAILS QUESTION MODIFIER */
+            details.is-help.has-title.is-question > .details-menu .title {
+                background-color: darkorchid;
+                border-bottom-color: transparent;
+                color: white;
+            }
+
+            details.is-help.has-title.is-question > summary,
+            details.is-help.has-title.is-question > .details-menu {
+                border-color: darkorchid;
+            }
+
+            details.is-help.has-title.is-question > .details-menu::before {
+                border-bottom-color: darkorchid;
+            }
+
+            details.is-help.has-title.is-question > .details-menu::after {
+                border-bottom-color: darkorchid;
+            }
+
+            /* DETAILS BUG MODIFIER */
+            details.is-help.has-title.is-bug > .details-menu .title {
+                background-color: #d73a4a;
+                border-bottom-color: transparent;
+                color: white;
+            }
+
+            details.is-help.has-title.is-bug > summary,
+            details.is-help.has-title.is-bug > .details-menu {
+                border-color: #d73a4a;
+            }
+
+            details.is-help.has-title.is-bug > .details-menu::before {
+                border-bottom-color: #d73a4a;
+            }
+
+            details.is-help.has-title.is-bug > .details-menu::after {
+                border-bottom-color: #d73a4a;
+            }
+
         details.is-help.has-title > .details-menu .content {
             padding: 10px;
+        }
+
+        .sw-icon > svg *,
+        details.is-help summary > svg * {
+            transition: all .3s;
+        }
+
+        details.is-help summary > svg * {
+            fill: #777;
+        }
+
+        .sw-icon.is-info > svg *,
+        details.is-help.is-info summary > svg * {
+            fill: #1888eb;
+        }
+
+        .sw-icon.is-success > svg *,
+        details.is-help.is-success summary > svg * {
+            fill: #14af14;
+        }
+
+        .sw-icon.is-caution > svg *,
+        details.is-help.is-caution summary > svg * {
+            fill: darkorange;
+        }
+
+        .sw-icon.is-warning > svg *,
+        details.is-help.is-warning summary > svg * {
+            fill: red;
+        }
+
+        .sw-icon.is-issue > svg *,
+        details.is-help.is-issue summary > svg * {
+            fill: #9467bd;
+        }
+
+        .sw-icon.is-question > svg *,
+        details.is-help.is-question summary > svg * {
+            fill: darkorchid;
+        }
+
+        .sw-icon.is-bug > svg *,
+        details.is-help.is-bug summary > svg * {
+            fill: #d73a4a;
+        }
+
+        .sw-icon.is-filled > svg * {
+            fill: white;
+        }
+
+        .button:hover > .sw-icon > svg * {
+            fill: white;
         }
 
 .progress {
@@ -3846,6 +4123,7 @@ details {
     width: 30px;
     height: 30px;
     line-height: 1;
+    pointer-events: none;
 }
 
 .sw-icon.is-small {
