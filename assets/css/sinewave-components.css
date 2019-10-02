@@ -447,7 +447,7 @@
     color: white;
 }
 
-/* STANDARD DATEPICKER */
+/* SINEWAVE STANDARD DATEPICKER */
 .sw-standard-datepicker {
     display: none;
     position: absolute;
@@ -465,7 +465,7 @@
 }
 
 .sw-standard-datepicker.is-sticky {
-    position: fixed;
+    position: fixed !important;
 }
 
 .sw-standard-datepicker-controls {
@@ -509,7 +509,8 @@
 }
 
 .sw-standard-datepicker-body td {
-    padding: 5px;
+    padding: 0;
+    line-height: 30px;
     text-align: center;
 }
 
@@ -526,3 +527,4 @@
 .sw-standard-datepicker-body-cell-empty {
     color: #d0d0d0;
 }
+    
