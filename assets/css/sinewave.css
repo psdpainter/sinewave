@@ -51,7 +51,7 @@ h1, h2, h3, h4, h5, h6, input, select, textarea {
 
 .hidden,
 .is-hidden {
-    display: none;
+    display: none !important;
 }
 
 .table {
@@ -405,6 +405,9 @@ button {
 }
 
 a.button {
+    display: inline-block;
+    margin-top: 2px;
+    margin-bottom: 2px;
     border: 2px solid transparent;
     text-decoration: none;
 }
@@ -568,7 +571,7 @@ table.table {
 
     .table thead th,
     .table tbody td {
-        padding: .5rem;
+        padding: 1rem .5rem;
     }
 
     .table.is-lined thead th, 
@@ -948,8 +951,24 @@ input[type=checkbox] {
     .form-field[readonly],
     input[readonly] {
         background-color: rgba(236, 242, 249, 1);
+        border-color: #b0c4de;
         color: #777;
         cursor: no-drop;
+    }
+
+    .form-field[readonly]::-webkit-input-placeholder,
+    input[readonly]::-webkit-input-placeholder {
+        color: #7eaacd;
+    }
+
+    .form-field[readonly]:-moz-input-placeholder,
+    input[readonly]:-moz-input-placeholder {
+        color: #7eaacd;
+    }
+
+    .form-field[readonly]::input-placeholder,
+    input[readonly]::input-placeholder {
+        color: #7eaacd;
     }
 
     .form-field.is-success {
@@ -1041,6 +1060,10 @@ input[type=checkbox] {
         .form-file > label:hover {
             background-color: #0266BE;
         }
+
+    .form-file.file-error > label {
+        background-color: red;
+    }
 
     .form-file.is-success > label {
         background-color: #14af14;
@@ -1189,6 +1212,18 @@ input[type=submit] {
 
 .w-10 {
     width: 10%;
+}
+
+.col-6 {
+    width: calc(100% / 6);
+}
+
+.col-7 {
+    width: calc(100% / 7);
+}
+
+.col-8 {
+    width: calc(100% / 8);
 }
 
 /* COLORS */
@@ -2900,8 +2935,12 @@ input[type=submit] {
 
             .sidebar .site-menu > ul li.is-flyout::after {
                 content: url(../img/more-horizontal.svg);
-                align-self: flex-end;
+                align-self: center;
                 pointer-events: none;
+            }
+
+            .sidebar .site-menu > ul li.is-flyout > ul.flyout li a {
+                border-radius: 0 !important;
             }
 
         .sidebar .site-menu ul li {
@@ -2911,15 +2950,17 @@ input[type=submit] {
             .sidebar .site-menu ul li a {
                 display: block;
                 flex: 1;
-                padding-top: .5rem;
-                padding-bottom: .5rem;
+                padding: .5rem 1rem;
+                border-radius: 5px;
                 color: black;
+                font-size: 14px;
                 font-weight: 600;
                 text-decoration: none;
             }
 
                 .sidebar .site-menu li a:hover {
-                    color: #ff0852;
+                    /* color: #ff0852; */
+                    background-color: #e2e9f1;
                 }
 
     .sidebar .flyout {
@@ -3197,8 +3238,6 @@ input[type=submit] {
     }
 
     .notice.is-thin {
-        margin-top: 12px;
-        margin-bottom: 12px;
         font-size: .875rem;
     }
 
@@ -3223,7 +3262,7 @@ input[type=submit] {
     .notice.is-thin > h4,
     .notice.is-thin > h5,
     .notice.is-thin > h6 {
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
 
     .notice p {
@@ -3302,6 +3341,74 @@ input[type=submit] {
         .notice.is-warning > p > strong {
             color: red;
         }
+
+    .notice.is-issue {
+        background-color: rgba(148, 103, 189, .1);
+        border-left-color: #9467bd;
+    }
+
+        .notice.is-issue > h1,
+        .notice.is-issue > h2,
+        .notice.is-issue > h3,
+        .notice.is-issue > h4,
+        .notice.is-issue > h5,
+        .notice.is-issue > h6,
+        .notice.is-issue > p > b,
+        .notice.is-issue > p > em,
+        .notice.is-issue > p > strong {
+            color: #9467bd;
+        }
+        
+    .notice.is-question {
+        background-color: rgba(153, 50, 204, .1);
+        border-left-color: darkorchid;
+    }
+
+        .notice.is-question > h1,
+        .notice.is-question > h2,
+        .notice.is-question > h3,
+        .notice.is-question > h4,
+        .notice.is-question > h5,
+        .notice.is-question > h6,
+        .notice.is-question > p > b,
+        .notice.is-question > p > em,
+        .notice.is-question > p > strong {
+            color: darkorchid;
+        }        
+
+    .notice.is-bug {
+        background-color: rgba(215, 58, 74, .1);
+        border-left-color: #d73a4a;
+    }
+
+        .notice.is-bug > h1,
+        .notice.is-bug > h2,
+        .notice.is-bug > h3,
+        .notice.is-bug > h4,
+        .notice.is-bug > h5,
+        .notice.is-bug > h6,
+        .notice.is-bug > p > b,
+        .notice.is-bug > p > em,
+        .notice.is-bug > p > strong {
+            color: #d73a4a;
+        }
+
+    .notice.is-optional {
+        background-color: rgba(102, 205, 170, .1);
+        border-left-color: mediumaquamarine;
+    }
+
+        .notice.is-optional > h1,
+        .notice.is-optional > h2,
+        .notice.is-optional > h3,
+        .notice.is-optional > h4,
+        .notice.is-optional > h5,
+        .notice.is-optional > h6,
+        .notice.is-optional > p > b,
+        .notice.is-optional > p > em,
+        .notice.is-optional > p > strong {
+            color: mediumaquamarine;
+        }    
 
     .notice.is-generic {
         background-color: rgba(255, 8, 82, .1);
